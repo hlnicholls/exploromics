@@ -42,7 +42,8 @@ class Annotation(Config):
             gene_convert.rename(columns={'symbol': 'Gene', '_score': 'opentargets_association_score'}, inplace=True)
             open_targets_genes = gene_convert[['Gene', 'opentargets_association_score']]
             self.open_targets_genes = open_targets_genes
-            return self.open_targets_genes
+            return self.open_targets_genes 
+
 
     def gene_annotations(self):
         dgidb_drugs = pd.read_table('./exploromics/data/dgidb_drug_interactions.tsv', usecols = ['gene_name', 'interaction_group_score'])
@@ -90,29 +91,34 @@ class Annotation(Config):
 
         
         if self.features_file is not None and self.disease is not None and self.disease_id is not None:
-            df_eda = reduce(lambda x,y: pd.merge(x,y, on='Gene', how='left'), [self.genelist, self.features, gene_length, gtex, self.open_targets_genes, pharmgkb_disease_drugs,
-                                                                            dgidb_drugs, hipred, sdi, pli, o_glncnac, rvis])
+            self.features_file.iloc[:, 1:] = self.features_file.iloc[:, 1:].applymap(int)
+            df_eda = reduce(lambda x,y: pd.merge(x,y, on='Gene', how='left'), [self.genelist, gene_length, gtex, self.open_targets_genes, pharmgkb_disease_drugs,
+                                                                            dgidb_drugs, hipred, sdi, pli, o_glncnac, self.features_file])
             
         elif self.features_file is not None and self.disease is None and self.disease_id is not None:
-            df_eda = reduce(lambda x,y: pd.merge(x,y, on='Gene', how='left'), [self.genelist, self.features, gene_length, gtex, self.open_targets_genes, dgidb_drugs,
-                                                                           hipred, sdi, pli, o_glncnac, rvis])
+            self.features_file.iloc[:, 1:] = self.features_file.iloc[:, 1:].applymap(int)
+            df_eda = reduce(lambda x,y: pd.merge(x,y, on='Gene', how='left'), [self.genelist, gene_length, gtex, self.open_targets_genes, dgidb_drugs,
+                                                                           hipred, sdi, pli, o_glncnac, rvis, self.features_file])
 
             
         elif self.features_file is not None and self.disease is not None and self.disease_id is None:
-            df_eda = reduce(lambda x,y: pd.merge(x,y, on='Gene', how='left'), [self.genelist, self.features, gene_length, gtex, pharmgkb_disease_drugs,
-                                                                            dgidb_drugs, hipred, sdi, pli, o_glncnac, rvis])
+            self.features_file.iloc[:, 1:] = self.features_file.iloc[:, 1:].applymap(int)
+            df_eda = reduce(lambda x,y: pd.merge(x,y, on='Gene', how='left'), [self.genelist, gene_length, gtex, pharmgkb_disease_drugs,
+                                                                            dgidb_drugs, hipred, sdi, pli, o_glncnac, rvis, self.features_file])
 
             
         elif self.features_file is not None and self.disease is None and self.disease_id is None:
-            df_eda = reduce(lambda x,y: pd.merge(x,y, on='Gene', how='left'), [self.genelist, self.features, gene_length, gtex, dgidb_drugs,
-                                                                           hipred, sdi, pli, o_glncnac, rvis]) 
+            self.features_file.iloc[:, 1:] = self.features_file.iloc[:, 1:].applymap(int)
+            df_eda = reduce(lambda x,y: pd.merge(x,y, on='Gene', how='left'), [self.genelist, gene_length, gtex, dgidb_drugs,
+                                                                           hipred, sdi, pli, o_glncnac, rvis, self.features_file]) 
 
             
         if self.features_file is not None:
             initial_columns = set(df_eda.columns)
             df_eda_deduplicated = df_eda.drop_duplicates(subset=df_eda.columns, keep=False)
             dropped_columns = initial_columns - set(df_eda_deduplicated.columns)
-            print("The following columns were dropped (input features match automated integrated features):", dropped_columns)
+            if dropped_columns:
+                print("The following gene annotation columns were dropped (input features match automated integrated features):", dropped_columns)
             df_eda = df_eda.drop_duplicates(subset=df_eda.columns, keep=False)
 
         else:
@@ -123,14 +129,18 @@ class Annotation(Config):
         self.df_eda = df_eda 
         gene_length_dict = defaultdict(list)
 
-        for col in df_eda.columns[4:]:
-            corr = df_eda[str(col)].corr(df_eda['Gene_length'])
+        nan_rows = df_eda[df_eda.isna().all(axis=1)]
+        count = nan_rows.shape[0]
+        print(f'{count} input genes have all NaN values across annotations')
+
+        for col in df_eda .columns[4:]:
+            corr = df_eda [str(col)].corr(df_eda['Gene_length'])
             gene_length_dict[str(col)].append(corr)
             gene_length_corr = pd.DataFrame.from_dict(gene_length_dict)
             gene_length_corrT = gene_length_corr.T
             gene_length_corrT.rename(columns={0: 'Gene length pearson correlation'}, inplace=True)
         gene_length_corrT.to_csv('./exploromics_results/Gene_length_correlation.csv', index=False)
-        print("Multi-omic data integrated...")
+        print("Multi-omic data integrated for input gene list...")
         return self.df_eda
 
     def background_annotations(self):
@@ -184,29 +194,30 @@ class Annotation(Config):
 
                 
                 if self.features_file is not None and self.disease is not None and self.disease_id is not None:
-                    background_df_eda = reduce(lambda x,y: pd.merge(x,y, on='Gene', how='left'), [self.background_genes, self.features, gene_length, gtex, self.open_targets_genes, pharmgkb_disease_drugs,
-                                                                                    dgidb_drugs, hipred, sdi, pli, o_glncnac, rvis])
+                    background_df_eda = reduce(lambda x,y: pd.merge(x,y, on='Gene', how='left'), [self.background_genes, gene_length, gtex, self.open_targets_genes, pharmgkb_disease_drugs,
+                                                                                    dgidb_drugs, hipred, sdi, pli, o_glncnac, rvis, self.features_file])
                     
                 elif self.features_file is not None and self.disease is None and self.disease_id is not None:
-                    background_df_eda = reduce(lambda x,y: pd.merge(x,y, on='Gene', how='left'), [self.background_genes, self.features, gene_length, gtex, self.open_targets_genes, dgidb_drugs,
-                                                                                hipred, sdi, pli, o_glncnac, rvis])
+                    background_df_eda = reduce(lambda x,y: pd.merge(x,y, on='Gene', how='left'), [self.background_genes, gene_length, gtex, self.open_targets_genes, dgidb_drugs,
+                                                                                hipred, sdi, pli, o_glncnac, rvis, self.features_file])
 
                     
                 elif self.features_file is not None and self.disease is not None and self.disease_id is None:
-                    background_df_eda = reduce(lambda x,y: pd.merge(x,y, on='Gene', how='left'), [self.background_genes, self.features, gene_length, gtex, pharmgkb_disease_drugs,
-                                                                                    dgidb_drugs, hipred, sdi, pli, o_glncnac, rvis])
+                    background_df_eda = reduce(lambda x,y: pd.merge(x,y, on='Gene', how='left'), [self.background_genes, gene_length, gtex, pharmgkb_disease_drugs,
+                                                                                    dgidb_drugs, hipred, sdi, pli, o_glncnac, rvis, self.features_file])
 
                     
                 elif self.features_file is not None and self.disease is None and self.disease_id is None:
-                    background_df_eda = reduce(lambda x,y: pd.merge(x,y, on='Gene', how='left'), [self.background_genes, self.features, gene_length, gtex, dgidb_drugs,
-                                                                                hipred, sdi, pli, o_glncnac, rvis]) 
+                    background_df_eda = reduce(lambda x,y: pd.merge(x,y, on='Gene', how='left'), [self.background_genes, gene_length, gtex, dgidb_drugs,
+                                                                                hipred, sdi, pli, o_glncnac, rvis, self.features_file]) 
 
                     
                 if self.features_file is not None:
                     background_initial_columns = set(background_df_eda.columns)
                     background_df_eda_deduplicated = background_df_eda.drop_duplicates(subset=background_df_eda.columns, keep=False)
                     background_dropped_columns = background_initial_columns - set(background_df_eda_deduplicated.columns)
-                    print("The following background gene columns were dropped (input features match automated integrated features):", background_dropped_columns)
+                    if background_dropped_columns:
+                        print("The following background gene annotations were dropped (input features match automated integrated features):", background_dropped_columns)
                     background_df_eda = background_df_eda.drop_duplicates(subset=background_df_eda.columns, keep=False)
 
                 else:
@@ -224,8 +235,11 @@ class Annotation(Config):
                     background_gene_length_corrT = background_gene_length_corr.T
                     background_gene_length_corrT.rename(columns={0: 'Gene length pearson correlation'}, inplace=True)
                 background_gene_length_corrT.to_csv('./exploromics_results/background_genes/Background_gene_length_correlation.csv', index=False)
-                print("Background genes' multi-omic data integrated...")
+                print("Multi-omic data integrated for background genes...")
                 return self.background_df_eda
+        else:
+            self.background_df_eda = None
+            return self.background_df_eda
 
     def run(self):
         self.opentargets_association()

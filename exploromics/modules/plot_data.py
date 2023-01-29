@@ -23,7 +23,7 @@ class Plot_data():
         self.background_df_eda = background_df_eda
 
     def gene_characteristics(self):
-        print("Plotting data visualizations...")
+        print("Plotting data visualizations for input gene list...")
         gene_chars = self.df_eda[['Gene', 'Chr', 'Gene_type']]
         if (gene_chars['Gene_type'] == 1).all():
             value = gene_chars['Gene_type'].iloc[0]
@@ -77,7 +77,7 @@ class Plot_data():
                 if self.background_df_eda.iloc[:, 0].equals(self.df_eda.iloc[:, 0]):
                     pass
                 else:
-                    print("Plotting background gene list data visualizations...")
+                    print("Plotting data visualizations for background genes...")
                     gene_chars = self.background_df_eda[['Gene', 'Chr', 'Gene_type']]
                     if (gene_chars['Gene_type'] == 1).all():
                         value = gene_chars['Gene_type'].iloc[0]

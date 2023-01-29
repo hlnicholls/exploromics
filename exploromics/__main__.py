@@ -17,10 +17,10 @@ class Exploromics(Config):
 def main():
     parser = argparse.ArgumentParser(description='Multi-omic annotation and analysis of a list of genes')
     parser.add_argument('--genelist', type=str, required=True, help='Path to the genelist file')
-    parser.add_argument("--features", type=str, nargs="?", default=None, help='Path to user features')
-    parser.add_argument('--disease', type=str, nargs="?", default=None, help='Disease name')
-    parser.add_argument("--diseaseID", type=str, nargs="?", default=None, help='Disease ID (as used by OpenTargets)')
-    parser.add_argument("--background", type=str, nargs="?", default=None, help='Path to background genelist file')
+    parser.add_argument("--features", type=str, required=False, default=None, help='Path to user features')
+    parser.add_argument('--disease', type=str, required=False,  nargs="?", default=None, help='Disease name')
+    parser.add_argument("--diseaseID", type=str, required=False,  nargs="?", default=None, help='Disease ID (as used by OpenTargets)')
+    parser.add_argument("--background", type=str,  required=False, default=None, help='Path to background genelist file')
     #Parse command-line arguments
     args = parser.parse_args()
 

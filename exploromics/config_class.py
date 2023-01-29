@@ -25,10 +25,10 @@ class Config:
             pass
 
         if features_file is not None:
-            if isinstance(self.self.features, pd.DataFrame):
+            if isinstance(self.features_file, pd.DataFrame):
                 pass
             else:
-                self.self.features  = pd.read_table(self.self.features, sep='\t', header=0)
+                self.features_file  = pd.read_table(self.features_file, sep='\t', header=0)
         if disease is not None:
             self.disease = disease.lower()
         if disease_id is not None:

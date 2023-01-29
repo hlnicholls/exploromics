@@ -18,7 +18,7 @@ python setup.py install
 
 ## Run
 
-- Set command-line working directory to package location, then run:
+- Set working directory to package location, then run:
 
 ```
 exploromics --genelist [hgnc gene list text file] --features [features text file] --disease [disease name] --diseaseID [disease id (as used by OpenTargets)] --background [background gene list text file]
@@ -27,7 +27,7 @@ exploromics --genelist [hgnc gene list text file] --features [features text file
 Example run:
 
 ```
-exploromics --genelist example/genes.txt --disease 'Essential hypertension' --diseaseID 'EFO_0000537' --background example/other_genes.txt
+exploromics --genelist example/genes.txt --features example/features.txt --disease 'Essential hypertension' --diseaseID 'EFO_0000537' --background example/other_genes.txt
 
 ```
 
