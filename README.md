@@ -1,7 +1,7 @@
 # Exploromics
 Tool for genetic exploratory data analysis and multi-omic data integration for machine learning.
 
-- Intergrates multi-omic data for an input genevlist
+- Intergrates multi-omic data for an input gene list
 - Visualises gene characteristics (chromosome distribution, gene types, gene length correlation)
 - Investigates annotated features (missingness and correlation) 
 - Integrates multi-omic data for a background gene list to compare with input gene list 
