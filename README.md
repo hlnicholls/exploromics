@@ -6,7 +6,7 @@ Tool for genetic exploratory data analysis and multi-omic data integration for m
 - Investigates annotated features (missingness and correlation) 
 - Integrates multi-omic data for a background gene list to compare with input gene list (Kolmogorov–Smirnov testing)
 
-## Installation:
+## Introduction:
 
 Machine learning applied to genomic data can several pitfalls when the potentially biasing biological characteristics underlying the data have not been considered[1]. 
 
