@@ -16,9 +16,14 @@ Machine learning applied to genomic data can have several pitfalls when the pote
 Requirements: Python3 (tested with v3.9.16)
 
 ```
+python setup.py install
+```
+
+Optional recommendation to setup your own virtual environment (tested with conda v23.1.0)
+
+```
 conda env create -f exploromics.yml
 conda activate exploromics
-python setup.py install
 ```
 
 
