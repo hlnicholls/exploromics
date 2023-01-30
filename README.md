@@ -8,7 +8,7 @@ Tool for genetic exploratory data analysis and multi-omic data integration for m
 
 ## Introduction:
 
-Machine learning applied to genomic data can several pitfalls when the potentially biasing biological characteristics underlying the data have not been considered[1]. 
+Machine learning applied to genomic data can have several pitfalls when the potentially biasing biological characteristics underlying the data have not been considered[1]. 
 
 ```Exploromics``` aims to assess a gene-level multi-omic dataset, providing an analysis of the biological factors that may impact machine learning applications. 
 
