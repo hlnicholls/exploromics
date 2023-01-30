@@ -50,3 +50,6 @@ optional arguments:
   --diseaseID [DISEASEID]         Disease ID (as used by OpenTargets)
   --background [BACKGROUND GENES] Background gene list text file
   ```
+  
+## Reference
+1. Whalen, S., Schreiber, J., Noble, W.S. et al. Navigating the pitfalls of applying machine learning in genomics. Nat Rev Genet 23, 169–181 (2022). https://doi.org/10.1038/s41576-021-00434-9
