@@ -4,7 +4,13 @@ Tool for genetic exploratory data analysis and multi-omic data integration for m
 - Intergrates multi-omic data for an input gene list
 - Visualises gene characteristics (chromosome distribution, gene types, gene length correlation)
 - Investigates annotated features (missingness and correlation) 
-- Integrates multi-omic data for a background gene list to compare with input gene list 
+- Integrates multi-omic data for a background gene list to compare with input gene list (Kolmogorov–Smirnov testing)
+
+## Installation:
+
+Machine learning applied to genomic data can several pitfalls when the potentially biasing biological characteristics underlying the data have not been considered[1]. 
+
+```Exploromics``` aims to assess a gene-level multi-omic dataset, providing an analysis of the biological factors that may impact machine learning applications. 
 
 ## Installation:
 Requirements: Python3 (tested with v3.9.16)
