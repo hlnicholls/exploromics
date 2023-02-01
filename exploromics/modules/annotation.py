@@ -134,7 +134,7 @@ class Annotation(Config):
         print(f'{count} input genes have all NaN values across annotations')
 
         for col in df_eda .columns[4:]:
-            corr = df_eda [str(col)].corr(df_eda['Gene_length'])
+            corr = df_eda [str(col)].corr(df_eda['Gene_length'], method='spearman')
             gene_length_dict[str(col)].append(corr)
             gene_length_corr = pd.DataFrame.from_dict(gene_length_dict)
             gene_length_corrT = gene_length_corr.T
@@ -229,7 +229,7 @@ class Annotation(Config):
                 background_gene_length_dict = defaultdict(list)
 
                 for col in background_df_eda.columns[4:]:
-                    corr = background_df_eda[str(col)].corr(background_df_eda['Gene_length'])
+                    corr = background_df_eda[str(col)].corr(background_df_eda['Gene_length'], method='spearman')
                     background_gene_length_dict[str(col)].append(corr)
                     background_gene_length_corr = pd.DataFrame.from_dict(background_gene_length_dict)
                     background_gene_length_corrT = background_gene_length_corr.T
