@@ -8,10 +8,9 @@ import seaborn as sns
 class Plot_data():
     """
     This class contains methods for creating and saving exploratory data visualisations.
-    It takes two inputs, a dataframe containing the data to be visualised and an optional background dataframe.
-
-    The following visualisations are created:
-
+    It takes two inputs, a dataframe containing the annotated gene list to be visualised and an optional background gene list. 
+    
+    Visualisations:
     gene_characteristics() - Creates bar plots of chromosome distribution and gene type distribution.
     feature_missingness() - Creates a bar plot of fraction of rows with missing data and a csv file containing the percent of missing values for each feature.
     feature_correlation() - Creates a csv file containing the correlation matrix and a csv file of correlation values for all features.
