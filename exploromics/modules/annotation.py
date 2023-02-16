@@ -11,16 +11,16 @@ import mygene
 class Annotation(Config):
     """
     Annotation class extracts and stores gene annotations from different data sources.
-    It annotaties the input genelist and can also annotate an optionally background genelist input
+    It annotates the input genelist and can also annotate an optional background genelist input
 
     Attributes:
-    disease_id (str): disease id
+    disease_id (str): disease id (as used by OpenTargets for disease of interest)
     open_targets_genes (pd.DataFrame): dataframe of open targets gene associations
 
     Methods:
     opentargets_association(): Identifies overall OpenTargets disease association scores and converts target ids to gene symbols.
     gene_annotations(): Extracts and stores gene annotations from dgidb, gtex, hipred, sdi, pli, o_glncnac, rvis, and pharmgkb.
-    background_annotations(
+    background_annotations(): Repeats gene_annotation process for an optional input background gene list
     """
     
     def opentargets_association(self):
