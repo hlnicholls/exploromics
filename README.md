@@ -52,7 +52,7 @@ optional arguments:
   -h, --help                      show this help message and exit
   --features [FEATURES]           Path to user features text file
   --disease [DISEASE]             Disease name
-  --diseaseID [DISEASEID]         Disease ID (as used by OpenTargets)
+  --diseaseID [DISEASEID]         Disease ID (as used by Open Targets)
   --background [BACKGROUND GENES] Background gene list text file
   ```
   
